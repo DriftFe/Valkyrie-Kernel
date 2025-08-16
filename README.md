@@ -1,6 +1,6 @@
 # Valkyrie-Kernel
 
-A minimal x86 (demo) kernel written in C and Assembly.
+A minimal x86 (demo) kernel written in C and x86_Assembly.
 
 ## Prerequisites
 
