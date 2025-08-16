@@ -4,7 +4,7 @@ A minimal x86 (demo) kernel written in C and Assembly, bootable with GRUB.
 
 ## Prerequisites
 
-Before building and running Valkyrie, make sure you have the following tools installed (haven't mentioned all the distros but you get the point :P) :
+Before building and running Valkyrie, make sure you have the following tools installed (haven't mentioned all the distros but you get the point :p) :
 
 ### Ubuntu/Debian:
 ```bash
