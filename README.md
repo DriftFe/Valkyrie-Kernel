@@ -83,7 +83,3 @@ gcc -m32 -ffreestanding -fno-pie -fno-stack-protector -Wall -Wextra -nostdlib -f
 - ❌ Multitasking
 
 ty for visitng :3
-
----
-
-**Happy kernel hacking!** 🔥
