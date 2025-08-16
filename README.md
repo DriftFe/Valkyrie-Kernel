@@ -4,7 +4,7 @@ A minimal x86 (demo) kernel written in C and Assembly, bootable with GRUB.
 
 ## Prerequisites
 
-Before building and running Valkyrie, make sure you have the following tools installed:
+Before building and running Valkyrie, make sure you have the following tools installed (haven't mentioned all the distros but you get the point :P) :
 
 ### Ubuntu/Debian:
 ```bash
@@ -20,12 +20,6 @@ sudo dnf install gcc nasm qemu grub2-tools xorriso
 ### Arch Linux:
 ```bash
 sudo pacman -S base-devel nasm qemu grub xorriso
-```
-
-### macOS (with Homebrew):
-```bash
-brew install nasm qemu grub xorriso
-# You may also need: brew install i386-elf-gcc
 ```
 
 ## Installation
