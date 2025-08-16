@@ -1,6 +1,6 @@
 # Valkyrie-Kernel
 
-A minimal x86 (demo) kernel written in C and Assembly, bootable with GRUB.
+A minimal x86 (demo) kernel written in C and Assembly.
 
 ## Prerequisites
 
