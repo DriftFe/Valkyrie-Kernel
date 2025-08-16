@@ -32,7 +32,7 @@ brew install nasm qemu grub xorriso
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/valkyrie-kernel.git
+   git clone https://github.com/DriftFe/Valkyrie-Kernel.git
    cd valkyrie-Kernel
    ```
 
