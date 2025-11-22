@@ -71,7 +71,7 @@ gcc -m32 -ffreestanding -fno-pie -fno-stack-protector -Wall -Wextra -nostdlib -f
 - ✅ Multiboot compliance (GRUB bootable)
 - ✅ VGA text mode output
 - ✅ Basic kernel structure
-- ❌ Keyboard input
+- ✅ Keyboard input
 - ❌ Memory management  
 - ❌ File system
 - ❌ Multitasking
