@@ -24,6 +24,12 @@
 #define VGA_COLOR_YELLOW 14
 #define VGA_COLOR_WHITE 15
 
+// VGA hardware cursor ports
+#define VGA_CRTC_INDEX_PORT 0x3D4
+#define VGA_CRTC_DATA_PORT 0x3D5
+#define VGA_CURSOR_LOW 0x0F
+#define VGA_CURSOR_HIGH 0x0E
+
 // Keyboard :3
 #define KEYBOARD_DATA_PORT 0x60
 #define KEYBOARD_STATUS_PORT 0x64
@@ -90,15 +96,30 @@ int strcmp(const char* s1, const char* s2) {
 }
 
 // VGA functions
+void vga_update_cursor();
+
 void vga_clear_screen() {
     for (uint32_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
         vga_buffer[i] = ((uint16_t)current_color << 8) | ' ';
     }
     vga_index = 0;
+    vga_update_cursor();
 }
 
 void vga_set_color(uint8_t foreground, uint8_t background) {
     current_color = (background << 4) | (foreground & 0x0F);
+}
+
+void vga_update_cursor() {
+    uint16_t position = (uint16_t)vga_index;
+    if (position >= VGA_WIDTH * VGA_HEIGHT) {
+        position = VGA_WIDTH * VGA_HEIGHT - 1;
+    }
+
+    outb(VGA_CRTC_INDEX_PORT, VGA_CURSOR_LOW);
+    outb(VGA_CRTC_DATA_PORT, position & 0xFF);
+    outb(VGA_CRTC_INDEX_PORT, VGA_CURSOR_HIGH);
+    outb(VGA_CRTC_DATA_PORT, (position >> 8) & 0xFF);
 }
 
 void vga_newline() {
@@ -113,6 +134,7 @@ void vga_newline() {
         }
         vga_index = VGA_WIDTH * (VGA_HEIGHT - 1);
     }
+    vga_update_cursor();
 }
 
 void vga_putchar(char c) {
@@ -127,6 +149,7 @@ void vga_putchar(char c) {
     
     vga_buffer[vga_index] = ((uint16_t)current_color << 8) | c;
     vga_index++;
+    vga_update_cursor();
 }
 
 void vga_print(const char* str) {
@@ -139,6 +162,7 @@ void vga_backspace() {
     if (vga_index > 0) {
         vga_index--;
         vga_buffer[vga_index] = ((uint16_t)current_color << 8) | ' ';
+        vga_update_cursor();
     }
 }
 
