@@ -1,12 +1,14 @@
 # Valkyrie Kernel :3
 
-Valkyrie is a tiny little 32-bit x86 kernel written in C and NASM assembly.
+Valkyrie is a tiny 32-bit x86 kernel written in C and NASM assembly.
 
-It boots through GRUB, runs happily inside QEMU, and gives you a cute little VGA text-mode shell to play with. It's not trying to be Linux. It's not trying to be Windows. It's just a silly little kernel doing its best. >w<
+It boots through GRUB, runs inside QEMU, and gives you a cute little VGA text-mode shell to play with. It's not Linux, it's not Windows, and it definitely isn't trying to be either.
+
+It's just a silly little kernel doing its best. >w<
 
 ## ✨ What is this?
 
-Valkyrie is a small hobby kernel project that currently has:
+Valkyrie currently has:
 
 * 🐧 GRUB booting
 * 🧠 32-bit x86 kernel code
@@ -14,11 +16,11 @@ Valkyrie is a small hobby kernel project that currently has:
 * ⌨️ Keyboard input
 * ⚡ Interrupt handling
 * 🐚 A tiny command shell
+* 💿 Bootable ISO generation
 * 🖥️ QEMU support
-* 💕 An unreasonable amount of affection for low-level programming
-:p
+* 💕 A suspicious amount of enthusiasm for low-level programming
 
-It boots straight into:
+Once booted, it drops you into:
 
 ```text
 valkyrie>
@@ -30,30 +32,31 @@ and waits patiently for you to type something.
 
 ## 🛠️ Requirements
 
-You'll need these tools installed:
+You'll need these installed on Linux:
 
 * `make`
 * GCC with 32-bit compilation support
 * NASM
 * GNU `ld`
-* `grub-mkrescue`
+* GRUB's `grub-mkrescue`
 * `xorriso`
+* `mtools` — provides `mformat`, which is used while creating the ISO
 * QEMU for x86 (`qemu-system-i386`)
 
 ### Debian / Ubuntu
 
 ```bash
 sudo apt update
-sudo apt install build-essential gcc-multilib nasm grub-pc-bin xorriso qemu-system-x86
+sudo apt install build-essential gcc-multilib nasm grub-pc-bin xorriso mtools qemu-system-x86
 ```
 
 ### Arch Linux
 
 ```bash
-sudo pacman -S --needed base-devel gcc-multilib nasm grub xorriso qemu-system-x86
+sudo pacman -S --needed base-devel gcc-multilib nasm grub xorriso mtools qemu-system-x86
 ```
 
-If something explodes because your distro decided to put a package somewhere silly, check your package manager first. :3
+If your distro decides to put one of these somewhere weird, that's between you and your package manager. :3
 
 ---
 
@@ -66,13 +69,13 @@ git clone <repository-url>
 cd Valkyrie-Kernel
 ```
 
-Then:
+Then build the ISO:
 
 ```bash
 make
 ```
 
-If everything goes according to plan, you'll get:
+This produces:
 
 ```text
 Valkyrie.iso
@@ -84,21 +87,23 @@ A tiny bootable ISO containing your tiny kernel. Yay! 🎀
 
 ## 🚀 Run it
 
-The easiest way is:
+You can build and launch Valkyrie with:
 
 ```bash
 make run
 ```
 
-This builds the ISO if necessary and then launches QEMU.
+`make run` builds the ISO first if it is missing or out of date, then launches QEMU.
 
-You should eventually be greeted by:
+You should eventually see:
 
 ```text
 valkyrie>
 ```
 
-Congratulations. Your computer is now running a kernel you made yourself. That's pretty heckin' cool. 💖
+Congratulations. Your computer is now running a kernel you made yourself.
+
+That's pretty heckin' cool. 💖
 
 To stop QEMU, close its window or press `Ctrl+C` in the terminal running `make run`.
 
@@ -106,14 +111,14 @@ To stop QEMU, close its window or press `Ctrl+C` in the terminal running `make r
 
 ## 🐚 The little shell
 
-Valkyrie currently understands a few commands:
+The prompt currently uses a **US keyboard layout** and understands these commands:
 
-| Command       | What it does                  |
-| ------------- | ----------------------------- |
-| `help`        | Shows the available commands. |
-| `clear`       | Clears the screen.            |
-| `about`       | Tells you about the kernel.   |
-| `echo <text>` | Prints your text back at you. |
+| Command       | What it does                        |
+| ------------- | ----------------------------------- |
+| `help`        | Shows the available commands.       |
+| `clear`       | Clears the screen.                  |
+| `about`       | Shows information about the kernel. |
+| `echo <text>` | Prints your text back at you.       |
 
 For example:
 
@@ -124,9 +129,9 @@ hello, Valkyrie!
 valkyrie> about
 ```
 
-Very advanced stuff. Absolutely cutting-edge technology. 😌
+Very advanced stuff.
 
-The keyboard currently uses a **US keyboard layout**.
+Absolutely cutting-edge technology. 😌
 
 ---
 
@@ -138,14 +143,9 @@ Made a mess? No worries.
 make clean
 ```
 
-This removes:
+This removes the generated object files, ELF executable, ISO, and temporary ISO directory.
 
-* object files
-* the kernel ELF
-* `Valkyrie.iso`
-* temporary ISO files
-
-Then just:
+Then:
 
 ```bash
 make run
@@ -157,15 +157,17 @@ and you're back in business. ✨
 
 ## 📁 Project structure
 
-| File         | Purpose                                                                |
-| ------------ | ---------------------------------------------------------------------- |
-| `kernel.c`   | The main kernel code — VGA, keyboard, interrupts, shell commands, etc. |
-| `kernel.asm` | Multiboot header + assembly entry point.                               |
-| `linker.ld`  | Tells the linker where to put the kernel (1 MiB).                      |
-| `grub.cfg`   | GRUB configuration that loads `kernel.elf`.                            |
-| `makefile`   | Handles building, ISO creation, and QEMU.                              |
+| File         | Purpose                                                                     |
+| ------------ | --------------------------------------------------------------------------- |
+| `kernel.c`   | Kernel code: VGA output, keyboard handling, interrupts, and shell commands. |
+| `kernel.asm` | Multiboot header and assembly entry point.                                  |
+| `linker.ld`  | Places the kernel at the 1 MiB load address.                                |
+| `grub.cfg`   | GRUB configuration that loads `kernel.elf`.                                 |
+| `makefile`   | Builds the kernel, creates the ISO, and launches QEMU.                      |
 
-It's small. It's cute. It boots. What more could you want? :3
+It's small. It's cute. It boots.
+
+What more could you want? :3
 
 ---
 
@@ -173,7 +175,7 @@ It's small. It's cute. It boots. What more could you want? :3
 
 ### `nasm: command not found`
 
-You don't have NASM installed.
+NASM isn't installed.
 
 Install it with your distro's package manager.
 
@@ -185,7 +187,23 @@ Install the GRUB tooling listed above.
 
 Install `xorriso`.
 
-GRUB uses it while creating the ISO.
+GRUB uses it while creating the bootable ISO.
+
+### `mformat: command not found`
+
+Install `mtools`.
+
+`mformat` is part of the `mtools` package and is used during ISO creation.
+
+### ISO creation fails around `mformat`
+
+Make sure `mtools` is installed correctly:
+
+```bash
+mformat -V
+```
+
+If that command isn't found, install `mtools` and try again.
 
 ### `qemu-system-i386: command not found`
 
@@ -195,19 +213,25 @@ Install the QEMU x86 package.
 
 Your GCC installation probably doesn't have 32-bit support enabled.
 
+On Debian / Ubuntu:
+
+```bash
+sudo apt install gcc-multilib
+```
+
 On Arch:
 
 ```bash
 sudo pacman -S gcc-multilib
 ```
 
-On Debian/Ubuntu:
+Then try:
 
 ```bash
-sudo apt install gcc-multilib
+make
 ```
 
-Then try the build again.
+again.
 
 ---
 
@@ -217,7 +241,13 @@ Because writing a kernel is fun.
 
 Because `mov eax, 0` makes the brain go brrrr.
 
-Because eventually you look at a black QEMU window displaying your own `valkyrie>` prompt and realize:
+Because eventually you look at a black QEMU window displaying your own:
+
+```text
+valkyrie>
+```
+
+and realize:
 
 **oh my god I made a computer thingy**
 
