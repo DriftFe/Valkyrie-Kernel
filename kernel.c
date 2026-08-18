@@ -1,12 +1,12 @@
 #include <stdint.h>
 #include <stddef.h>
 
-// VGA text mode buffer
+// VGA text mode buffer thingi idk
 #define VGA_ADDRESS 0xB8000
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
-// Colors
+// COLORSSSSSSS
 #define VGA_COLOR_BLACK 0
 #define VGA_COLOR_BLUE 1
 #define VGA_COLOR_GREEN 2
@@ -24,11 +24,11 @@
 #define VGA_COLOR_YELLOW 14
 #define VGA_COLOR_WHITE 15
 
-// Keyboard
+// Keyboard :3
 #define KEYBOARD_DATA_PORT 0x60
 #define KEYBOARD_STATUS_PORT 0x64
 
-// IDT
+// IDT or smth
 #define IDT_SIZE 256
 #define INTERRUPT_GATE 0x8E
 #define KERNEL_CODE_SEGMENT_OFFSET 0x08
@@ -36,7 +36,7 @@
 #define ENTER_KEY_CODE 0x1C
 #define BACKSPACE_KEY_CODE 0x0E
 
-// Global variables
+// Global vars
 static uint16_t* vga_buffer = (uint16_t*)VGA_ADDRESS;
 static uint32_t vga_index = 0;
 static uint8_t current_color = VGA_COLOR_LIGHT_GREY;
@@ -44,7 +44,7 @@ static uint8_t current_color = VGA_COLOR_LIGHT_GREY;
 static char keyboard_buffer[256];
 static uint8_t keyboard_buffer_index = 0;
 
-// IDT entry structure
+// IDT entry uhh structure 
 struct IDT_entry {
     uint16_t offset_lowerbits;
     uint16_t selector;
@@ -63,7 +63,7 @@ struct IDT_ptr {
 
 struct IDT_ptr idt_ptr;
 
-// Port I/O functions
+// Port I/O stuff
 static inline uint8_t inb(uint16_t port) {
     uint8_t ret;
     __asm__ __volatile__("inb %1, %0" : "=a"(ret) : "Nd"(port));
@@ -104,7 +104,7 @@ void vga_set_color(uint8_t foreground, uint8_t background) {
 void vga_newline() {
     vga_index = (vga_index / VGA_WIDTH + 1) * VGA_WIDTH;
     if (vga_index >= VGA_WIDTH * VGA_HEIGHT) {
-        // Scroll screen
+        // Scroll screen func
         for (uint32_t i = 0; i < VGA_WIDTH * (VGA_HEIGHT - 1); i++) {
             vga_buffer[i] = vga_buffer[i + VGA_WIDTH];
         }
@@ -142,7 +142,7 @@ void vga_backspace() {
     }
 }
 
-// Keyboard scancode to ASCII mapping (US layout)
+// Keyboard scancode to ASCII mapping (US layout.. cuz why not)
 static char scancode_to_ascii[128] = {
     0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b',
     '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',
@@ -234,7 +234,7 @@ void keyboard_handler_main(uint8_t scancode) {
     
     }
 
-// Assembly wrapper for keyboard handler
+// Assembly wrapper for keyboard handler (ASSEMBLY >~<)
 __asm__(
     ".global keyboard_handler\n"
     ".type keyboard_handler, @function\n"
@@ -291,7 +291,7 @@ void idt_init() {
 
 // PIC (Programmable Interrupt Controller) initialization
 void pic_init() {
-    // ICW1 - begin initialization
+    // ICW1 - begin initialization, autobots rollout thing
     outb(0x20, 0x11);
     outb(0xA0, 0x11);
     
@@ -307,13 +307,13 @@ void pic_init() {
     outb(0x21, 0x01);
     outb(0xA1, 0x01);
     
-    // Mask all interrupts except keyboard (IRQ1)
+    // Mask all interrupts except keyboard (IRQ1) :p
     outb(0x21, 0xFD);
     outb(0xA1, 0xFF);
 }
 
 void kernel_main() {
-    // Clear screen with black background
+    // Clear screen with black background cuz OBV
     vga_set_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
     vga_clear_screen();
     
@@ -331,13 +331,13 @@ void kernel_main() {
     idt_init();
     pic_init();
     
-    // Enable interrupts
+    // Enable interrupts heh..
     __asm__ __volatile__("sti");
     
     // Print first prompt
     print_prompt();
     
-    // Infinite loop
+    // Infinite loop thing
     while (1) {
         __asm__ __volatile__("hlt");
     }
