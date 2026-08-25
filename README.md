@@ -65,7 +65,7 @@ If your distro decides to put one of these somewhere weird, that's between you a
 Clone the repository and hop into it:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/DriftFe/Valkyrie-Kernel
 cd Valkyrie-Kernel
 ```
 
