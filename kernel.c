@@ -100,11 +100,19 @@ int strcmp(const char *s1, const char *s2) {
 void vga_update_cursor();
 
 void vga_clear_screen() {
+<<<<<<< HEAD
   for (uint32_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
     vga_buffer[i] = ((uint16_t)current_color << 8) | ' ';
   }
   vga_index = 0;
   vga_update_cursor();
+=======
+    for (uint32_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
+        vga_buffer[i] = ((uint16_t)current_color << 8) | ' ';
+    }
+    vga_index = 0;
+    vga_update_cursor();
+>>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
 }
 
 void vga_set_color(uint8_t foreground, uint8_t background) {
@@ -123,6 +131,18 @@ void vga_update_cursor() {
   outb(VGA_CRTC_DATA_PORT, (position >> 8) & 0xFF);
 }
 
+void vga_update_cursor() {
+    uint16_t position = (uint16_t)vga_index;
+    if (position >= VGA_WIDTH * VGA_HEIGHT) {
+        position = VGA_WIDTH * VGA_HEIGHT - 1;
+    }
+
+    outb(VGA_CRTC_INDEX_PORT, VGA_CURSOR_LOW);
+    outb(VGA_CRTC_DATA_PORT, position & 0xFF);
+    outb(VGA_CRTC_INDEX_PORT, VGA_CURSOR_HIGH);
+    outb(VGA_CRTC_DATA_PORT, (position >> 8) & 0xFF);
+}
+
 void vga_newline() {
   vga_index = (vga_index / VGA_WIDTH + 1) * VGA_WIDTH;
   if (vga_index >= VGA_WIDTH * VGA_HEIGHT) {
@@ -130,6 +150,7 @@ void vga_newline() {
     for (uint32_t i = 0; i < VGA_WIDTH * (VGA_HEIGHT - 1); i++) {
       vga_buffer[i] = vga_buffer[i + VGA_WIDTH];
     }
+<<<<<<< HEAD
     for (uint32_t i = VGA_WIDTH * (VGA_HEIGHT - 1); i < VGA_WIDTH * VGA_HEIGHT;
          i++) {
       vga_buffer[i] = ((uint16_t)current_color << 8) | ' ';
@@ -152,6 +173,24 @@ void vga_putchar(char c) {
   vga_buffer[vga_index] = ((uint16_t)current_color << 8) | c;
   vga_index++;
   vga_update_cursor();
+=======
+    vga_update_cursor();
+}
+
+void vga_putchar(char c) {
+    if (c == '\n') {
+        vga_newline();
+        return;
+    }
+    
+    if (vga_index >= VGA_WIDTH * VGA_HEIGHT) {
+        vga_newline();
+    }
+    
+    vga_buffer[vga_index] = ((uint16_t)current_color << 8) | c;
+    vga_index++;
+    vga_update_cursor();
+>>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
 }
 
 void vga_print(const char *str) {
@@ -161,11 +200,19 @@ void vga_print(const char *str) {
 }
 
 void vga_backspace() {
+<<<<<<< HEAD
   if (vga_index > 0) {
     vga_index--;
     vga_buffer[vga_index] = ((uint16_t)current_color << 8) | ' ';
     vga_update_cursor();
   }
+=======
+    if (vga_index > 0) {
+        vga_index--;
+        vga_buffer[vga_index] = ((uint16_t)current_color << 8) | ' ';
+        vga_update_cursor();
+    }
+>>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
 }
 
 // Keyboard scancode to ASCII mapping (US layout.. cuz why not)
