@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Valkyrie Kernel
 
 Valkyrie is a small 32-bit x86 kernel written in C and NASM assembly. It is
@@ -370,4 +369,3 @@ Do whatever you want with it.
 Make it better. Make it worse. Add a filesystem. Add networking. Make the shell pink. Put it on real hardware.
 
 Just have fun with it. 🎀
->>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
