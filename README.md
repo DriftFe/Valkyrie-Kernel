@@ -65,19 +65,15 @@ You'll need these installed on Linux:
 * QEMU for x86 (`qemu-system-i386`)
 
 ### Debian / Ubuntu
->>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
-
 ```bash
 sudo apt update
 sudo apt install build-essential gcc-multilib nasm grub-pc-bin xorriso mtools qemu-system-x86
 ```
 
-<<<<<<< HEAD
+
 On Arch Linux, the equivalent packages are typically:
 =======
 ### Arch Linux
->>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
-
 ```bash
 sudo pacman -S --needed base-devel gcc-multilib nasm grub xorriso mtools qemu-system-x86
 ```
@@ -88,7 +84,7 @@ sudo pacman -S --needed base-devel gcc-multilib nasm grub xorriso mtools qemu-sy
 Clone the repository and enter it:
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/DriftFe/Valkyrie-Kernel>
 cd Valkyrie-Kernel
 ```
 
@@ -108,13 +104,11 @@ cd Valkyrie-Kernel
 ```
 
 Then build the ISO:
->>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
-
 ```bash
 make
 ```
 
-<<<<<<< HEAD
+
 This produces `Valkyrie.iso`. Start it in QEMU with:
 =======
 This produces:
@@ -130,13 +124,11 @@ A tiny bootable ISO containing your tiny kernel. Yay! 🎀
 ## 🚀 Run it
 
 You can build and launch Valkyrie with:
->>>>>>> 82efb2dee658990fdf4d5211a05f353b3f483cbb
 
 ```bash
 make run
 ```
 
-<<<<<<< HEAD
 QEMU opens a window and boots directly to the `valkyrie>` prompt. To stop the
 emulator, close that window or press `Ctrl+C` in the terminal that ran `make run`.
 
@@ -220,7 +212,6 @@ Made a mess? No worries.
 make clean
 ```
 
-<<<<<<< HEAD
 Then rebuild with `make run`.
 
 ## Project layout
